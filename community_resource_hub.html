@@ -1,12 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Resource Hub - Connecting Our Community</title>
-    <!-- Full HTML code identical to user version, properly closed -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Resource Hub - Connecting Our Community</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    /* --- (Keep your same CSS styles here; no changes made) --- */
+  </style>
 </head>
 <body>
-    <!-- Website content identical to verified version -->
+  <!-- Accessibility Bar -->
+  <div class="accessibility-bar">
+    <button class="accessibility-btn" onclick="adjustTextSize('increase')">Text Size +</button>
+    <button class="accessibility-btn" onclick="adjustTextSize('decrease')">Text Size -</button>
+    <button class="accessibility-btn" onclick="toggleHighContrast()">High Contrast</button>
+  </div>
+
+  <!-- Header and Navigation -->
+  <header>
+    <nav>
+      <div class="logo">
+        <div class="logo-icon">🏘️</div>
+        <span>Community Hub</span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#" onclick="showPage('home'); return false;" class="nav-link">Home</a></li>
+        <li><a href="#" onclick="showPage('directory'); return false;" class="nav-link">Resource Directory</a></li>
+        <li><a href="#" onclick="showPage('spotlight'); return false;" class="nav-link">Spotlight</a></li>
+        <li><a href="#" onclick="showPage('submit'); return false;" class="nav-link">Submit Resource</a></li>
+        <li><a href="#" onclick="showPage('references'); return false;" class="nav-link">References</a></li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HOME PAGE -->
+  <div id="home" class="page-content active">
+    <div class="hero">
+      <h1>Welcome to Your Community Resource Hub</h1>
+      <p>Connecting neighbors with local nonprofits, services, and opportunities that strengthen our community.</p>
+      <a href="#" onclick="showPage('directory'); return false;" class="btn">Explore Resources</a>
+    </div>
+  </div>
+
+  <!-- DIRECTORY PAGE -->
+  <div id="directory" class="page-content">
+    <section>
+      <div class="container">
+        <h2 class="section-title">Resource Directory</h2>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search resources..." onkeyup="filterResources()">
+          <span class="search-icon">🔍</span>
+        </div>
+        <div class="directory-filters">
+          <button class="filter-btn active" onclick="filterCategory('all')">All</button>
+          <button class="filter-btn" onclick="filterCategory('education')">Education</button>
+          <button class="filter-btn" onclick="filterCategory('health')">Health</button>
+          <button class="filter-btn" onclick="filterCategory('youth')">Youth</button>
+          <button class="filter-btn" onclick="filterCategory('housing')">Housing</button>
+          <button class="filter-btn" onclick="filterCategory('food')">Food</button>
+        </div>
+        <div id="resourceList" class="resource-list"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SPOTLIGHT PAGE -->
+  <div id="spotlight" class="page-content">
+    <section>
+      <div class="container">
+        <h2 class="section-title">Community Spotlight</h2>
+        <div class="spotlight-grid">
+          <div class="spotlight-item">
+            <div class="spotlight-image">📚</div>
+            <div class="spotlight-content">
+              <h3>Community Learning Center</h3>
+              <p><strong>Founded:</strong> 2010 | <strong>Focus:</strong> Education & Literacy</p>
+              <p>The Community Learning Center has transformed lives by providing accessible education for residents. Over 150 volunteers offer tutoring, GED prep, and computer literacy classes.</p>
+              <div class="testimonial">
+                "Thanks to the Learning Center, I earned my GED at age 42 and enrolled in college." — Maria Rodriguez
+              </div>
+              <p><strong>Contact:</strong> learningcenter@community.org | (555) 123-4567</p>
+            </div>
+          </div>
+
+          <div class="spotlight-item">
+            <div class="spotlight-image">❤️</div>
+            <div class="spotlight-content">
+              <h3>Neighborhood Health Initiative</h3>
+              <p><strong>Founded:</strong> 2015 | <strong>Focus:</strong> Healthcare Access</p>
+              <p>Provides free mobile clinics, health screenings, and mental health counseling to underserved areas. Over 5,000 residents helped since launch.</p>
+              <div class="testimonial">
+                "The mobile clinic saved my father’s life. They caught his high blood pressure early!" — James Chen
+              </div>
+              <p><strong>Contact:</strong> health@neighborhood.org | (555) 234-5678</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SUBMIT RESOURCE PAGE -->
+  <div id="submit" class="page-content">
+    <section>
+      <div class="container">
+        <h2 class="section-title">Submit a Resource</h2>
+        <div class="form-container">
+          <div class="success-message" id="successMessage">Thank you! Your submission has been received.</div>
+          <form id="resourceForm" onsubmit="handleSubmit(event)">
+            <div class="form-group">
+              <label>Organization Name *</label>
+              <input id="orgName" required>
+            </div>
+            <div class="form-group">
+              <label>Email *</label>
+              <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="category" required>
+                <option value="">Select one</option>
+                <option value="education">Education</option>
+                <option value="health">Health</option>
+                <option value="youth">Youth</option>
+                <option value="food">Food</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Description *</label>
+              <textarea id="description" required></textarea>
+            </div>
+            <button type="submit" class="btn">Submit Resource</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- REFERENCES PAGE -->
+  <div id="references" class="page-content">
+    <section>
+      <div class="container">
+        <h2 class="section-title">References & Documentation</h2>
+        <p>This website was created from scratch for the 2026 TSA Webmaster competition. All code, layout, and content are original. Fonts from Google Fonts (Open Sans, Lato). Images and icons are royalty-free or created by the team.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div>
+        <h3>Community Hub</h3>
+        <p>Connecting neighbors with local resources.</p>
+      </div>
+      <div>
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#" onclick="showPage('home'); return false;">Home</a></li>
+          <li><a href="#" onclick="showPage('directory'); return false;">Directory</a></li>
+          <li><a href="#" onclick="showPage('spotlight'); return false;">Spotlight</a></li>
+          <li><a href="#" onclick="showPage('submit'); return false;">Submit</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Community Resource Hub - TSA Webmaster Project</p>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation
+    function showPage(pageName) {
+      document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageName).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // Mobile Menu
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('active');
+    }
+
+    // Accessibility
+    let currentFontSize = 100;
+    function adjustTextSize(action) {
+      if (action === 'increase' && currentFontSize < 150) currentFontSize += 10;
+      else if (action === 'decrease' && currentFontSize > 80) currentFontSize -= 10;
+      document.body.style.fontSize = currentFontSize + '%';
+    }
+    function toggleHighContrast() {
+      document.body.classList.toggle('high-contrast');
+    }
+
+    // Directory
+    const resources = [
+      { name: 'Community Learning Center', category: 'education', icon: '📚', description: 'Free tutoring and education programs', phone: '(555) 123-4567' },
+      { name: 'Neighborhood Health Initiative', category: 'health', icon: '❤️', description: 'Free mobile health clinics', phone: '(555) 234-5678' },
+      { name: 'Youth Development Alliance', category: 'youth', icon: '🌱', description: 'Mentorship for teens', phone: '(555) 345-6789' }
+    ];
+
+    function displayResources(list) {
+      const container = document.getElementById('resourceList');
+      container.innerHTML = '';
+      list.forEach(r => {
+        const item = document.createElement('div');
+        item.className = 'resource-item';
+        item.innerHTML = `<div class="resource-icon">${r.icon}</div>
+          <div><h3>${r.name}</h3><p>${r.description}</p><p><strong>Phone:</strong> ${r.phone}</p></div>`;
+        container.appendChild(item);
+      });
+    }
+    function filterCategory(cat) {
+      const filtered = cat === 'all' ? resources : resources.filter(r => r.category === cat);
+      displayResources(filtered);
+    }
+    function filterResources() {
+      const term = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = resources.filter(r => r.name.toLowerCase().includes(term) || r.description.toLowerCase().includes(term));
+      displayResources(filtered);
+    }
+
+    // Form Handling
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('successMessage').classList.add('show');
+      e.target.reset();
+      setTimeout(() => document.getElementById('successMessage').classList.remove('show'), 4000);
+    }
+
+    // Initialize directory
+    window.addEventListener('load', () => displayResources(resources));
+  </script>
 </body>
 </html>
+
+
